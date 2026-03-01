@@ -5,7 +5,7 @@ import pytz
 import threading
 
 # ================== الإعدادات ==================
-TOKEN = "5226566895:AAEDL56hfHYJRrf2_0wHOlLyUG2XL_rCM5U"
+TOKEN = "8496382800:AAH6051l8WnJgNfJfUmOlzpDw1sROXKTAvs"
 CHANNEL = "@ZERO7097"
 BASE_URL = f"https://api.telegram.org/bot{TOKEN}"
 utc = pytz.utc
@@ -175,4 +175,5 @@ def handle_message(msg):
                     time.sleep(5)
 
         if name == "main":
+
             start_bot()
