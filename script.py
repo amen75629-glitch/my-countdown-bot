@@ -7,7 +7,7 @@ import threading
 
 # ================== 1. الإعدادات المستقرة ==================
 TOKEN = "8496382800:AAH6051l8WnJgNfJfUmOlzpDw1sROXKTAvs" 
-CHANNEL_ID = "38870714"
+CHANNEL_ID = "@ZERO7097"
 BASE_URL = f"https://api.telegram.org/bot{TOKEN}"
 utc = pytz.utc
 
@@ -231,3 +231,4 @@ if __name__ == "__main__":
                     handle_update(u)
         except Exception as e:
             time.sleep(5)
+
