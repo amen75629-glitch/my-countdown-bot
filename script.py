@@ -5,7 +5,7 @@ import pytz
 import threading
 
 # ================== الإعدادات ==================
-TOKEN = "PUT_YOUR_NEW_TOKEN_HERE"
+TOKEN = "8496382800:AAH6051l8WnJgNfJfUmOlzpDw1sROXKTAvs"
 CHANNEL = "@ZERO7097"
 BASE_URL = f"https://api.telegram.org/bot{TOKEN}"
 utc = pytz.utc
@@ -172,3 +172,4 @@ def start_bot():
 
 if __name__ == "__main__":
     start_bot()
+
