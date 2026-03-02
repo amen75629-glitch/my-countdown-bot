@@ -128,7 +128,7 @@ def countdown_worker(chat_id, end_time_str, title, mid, start_time_str=None):
         else:
             done = (now - start_dt).total_seconds()
             # الآن القسمة آمنة لأننا تأكدنا أن total > 0
-            percent = max(0, min(100, (done / total >0) * 100))
+            percent = max(0, min(100, (done / total >=0) * 100))
 
         # رسم الشريط بناءً على النسبة المحسوبة بأمان
         blocks = int(percent / 10)
@@ -239,3 +239,4 @@ if __name__ == "__main__":
                     handle_update(u)
         except:
             time.sleep(5)
+
