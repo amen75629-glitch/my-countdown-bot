@@ -5,7 +5,7 @@ import pytz
 import threading
 
 # ================== الإعدادات ==================
-TOKEN = "8496382800:AAH6051l8WnJgNfJfUmOlzpDw1sROXKTAvs"
+TOKEN = "PUT_YOUR_NEW_TOKEN_HERE"
 CHANNEL = "@ZERO7097"
 BASE_URL = f"https://api.telegram.org/bot{TOKEN}"
 utc = pytz.utc
@@ -17,7 +17,8 @@ user_states = {}
 def telegram_request(method, data=None, params=None):
     url = f"{BASE_URL}/{method}"
     try:
-        response = requests.post(url, data=data, params=params, timeout=15)
+        # استخدام json=data أفضل مع واجهة تيليجرام
+        response = requests.post(url, json=data, params=params, timeout=15)
         return response.json()
     except requests.RequestException as e:
         print(f"Telegram API error: {e}")
@@ -34,14 +35,12 @@ def send_message(chat_id, text):
         return res["result"]["message_id"]
     return None
 
-
 def edit_message(chat_id, message_id, text):
     telegram_request("editMessageText", data={
         "chat_id": chat_id,
         "message_id": message_id,
         "text": text
     })
-
 
 def check_membership(user_id):
     res = telegram_request("getChatMember", params={
@@ -54,7 +53,6 @@ def check_membership(user_id):
         return status in ["member", "administrator", "creator"]
     return False
 
-
 # ================== التحقق من التاريخ ==================
 
 def parse_datetime(text):
@@ -65,7 +63,6 @@ def parse_datetime(text):
     except ValueError:
         pass
     return None
-
 
 # ================== العد التنازلي ==================
 
@@ -90,7 +87,6 @@ def countdown_worker(chat_id, end_time):
         edit_message(chat_id, message_id, text)
 
         time.sleep(60)
-
 
 # ================== معالجة الرسائل ==================
 
@@ -146,34 +142,33 @@ def handle_message(msg):
             daemon=True
         ).start()
 
-        # ================== تشغيل البوت ==================
+# ================== تشغيل البوت ==================
 
-        def start_bot():
-            print("🤖 البوت يعمل...")
-            offset = None
+def start_bot():
+    print("🤖 البوت يعمل...")
+    offset = None
 
-            while True:
-                try:
-                    params = {"timeout": 20}
-                    if offset is not None:
-                        params["offset"] = offset
+    while True:
+        try:
+            params = {"timeout": 20}
+            if offset is not None:
+                params["offset"] = offset
 
-                    res = requests.get(f"{BASE_URL}/getUpdates", params=params, timeout=30).json()
+            res = requests.get(f"{BASE_URL}/getUpdates", params=params, timeout=30).json()
 
-                    if not res.get("ok"):
-                        continue
+            if not res.get("ok"):
+                continue
 
-                    for update in res.get("result", []):
-                        offset = update["update_id"] + 1
+            for update in res.get("result", []):
+                offset = update["update_id"] + 1
 
-                        message = update.get("message")
-                        if message:
-                            handle_message(message)
+                message = update.get("message")
+                if message:
+                    handle_message(message)
 
-                except Exception as e:
-                    print("Network error:", e)
-                    time.sleep(5)
+        except Exception as e:
+            print("Network error:", e)
+            time.sleep(5)
 
-        if name == "main":
-
-            start_bot()
+if __name__ == "__main__":
+    start_bot()
